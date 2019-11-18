@@ -1,0 +1,34 @@
+
+//normalize
+@import "normalize";
+
+//media query
+@import "query/query";
+
+// colors
+@import "colors";
+//fonts
+@import "font/font";
+
+//nav
+@import'nav/nav';
+
+//base
+@import'base';
+
+//UI
+@import "UI/slider";
+@import "UI/social";
+@import "UI/blocks";
+@import "UI/btns";
+
+//components
+@import "components/header";
+@import "components/footer";
+
+//animations
+@import "animations";
+
+
+
+

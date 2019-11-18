@@ -1,0 +1,148 @@
+
+.slider {
+  &__nav {
+    position: absolute;
+    top: 20%;
+    width: -webkit-calc(100% + 100px);
+    width: calc(100% + 154px);
+    left: -77px;
+  }
+  &__prev, &__next {
+    cursor: pointer;
+    display: inline-block;
+    padding: 10px;
+    position: absolute;
+  }
+  &__next {
+    right: 0;
+  }
+  &__prev {
+    left: 0;
+  }
+  @include md_1190{
+    &__nav {
+      width: calc(100% + 55px);
+      left: -27px;
+    }
+  }
+  @include sm_690 {
+    &__nav {
+      width: calc(100% + 70px);
+      left: -35px;
+    }
+  }
+  @include xs_320 {
+    &__nav {
+      width: calc(100% + 40px);
+      left: -20px;
+    }
+  }
+}
+
+
+
+
+.comment {
+  max-width: 1060px;
+  margin: 0 auto;
+  &__item {
+    max-width: 273px;
+    width: 100%;
+    transition: opacity .4s;
+  }
+  &__wrap {
+    display: flex;
+    justify-content: flex-start;
+    transition: transform .5s ease-in-out;
+  }
+  &__message {
+    background-color: $color-grey-light;
+    font-style: italic;
+    padding: 31px 16px 36px 16px;
+    margin-bottom: 27px;
+    border-radius: 4px;
+    font-size: 14px;
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 27px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 15px 10px 0 10px;
+      border-color: $color-grey-light transparent transparent transparent;
+    }
+    &.text {
+      margin-bottom: 20px;
+    }
+  }
+  &__data {
+    display: flex;
+    align-items: flex-start;
+  }
+  &__img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: contain;
+    margin-right: 15px;
+  }
+  &__describe {
+    margin-top: 10px;
+  }
+  &__name {
+    color: $color-primary-lighter;
+    font-family: 'Open Sans';
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  &__position {
+    &.text {
+      margin-bottom: 0;
+    }
+  }
+  @include md_1190 {
+    max-width: 878px;
+  }
+  @include md_960 {
+    max-width: 650px;
+    &__item {
+      max-width: 190px;
+    }
+  }
+  @include sm_769 {
+    max-width: 600px;
+    &__data {
+      flex-direction: column;
+      align-items: center;
+    }
+    &__img {
+      margin-right: 0;
+    }
+    &__name {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+    &__message.text {
+      margin-bottom: 5px;
+    }
+  }
+  @include sm_690 {
+    max-width: 400px;
+  }
+  @include xs_540 {
+    max-width: 300px;
+    &__item {
+      max-width: 300px;
+    }
+  }
+  @include xs_320 {
+    max-width: 280px;
+    &__item {
+      max-width: 280px;
+    }
+  }
+}

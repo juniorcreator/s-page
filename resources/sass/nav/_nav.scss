@@ -1,0 +1,245 @@
+.nav {
+  &__list {
+    display: flex;
+    margin-right: -28px;
+  }
+  &__burger {
+    color: $color-secondary;
+    font-size: 25px;
+    position: absolute;
+    cursor: pointer;
+    transition: all .2s;
+    display: none;
+  }
+  &__item {
+    &.active {
+      .nav__link {
+        background-color: #ff9b51;
+      }
+    }
+    margin-right: 1px;
+    &:last-of-type {
+      margin-right: 0;
+    }
+    &:hover {
+      .dropdown {
+       opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+  &__link {
+    color: rgba($color-secondary, .69);
+    font-family: "Open Sans - Semibold";
+    font-size: 14px;
+    font-weight: 400;
+    padding: 29px 26px 30px 31px;
+    transition: background-color .30s ease-in-out;
+    &:hover {
+      background-color: #ff9b51;
+    }
+  }
+  @include md_1190 {
+    &__list {
+      margin-right: 0;
+    }
+  }
+  @include sm_769 {
+    &__burger {
+      display: inline-block;
+      right: 25px;
+      top: 18px;
+      z-index: 2;
+    }
+    &__wrap {
+      overflow-y: auto;
+      position: fixed;
+      left: -120%;
+      top: 0;
+      background-color: #37495e;
+      z-index: 1;
+      height: 100%;
+      width: 100%;
+    }
+    &__list {
+      flex-direction: column;
+      width: 100%;
+      padding-top: 50px;
+      transition: left .3s ease-in-out;
+    }
+    &__item {
+      &.active{
+        .dropdown {
+          height: 100%;
+          display: block;
+          padding: 15px;
+        }
+      }
+    }
+    &__link {
+      padding: 10px 0;
+      width: 100%;
+      text-align: center;
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+  &.show {
+    .nav__wrap {
+      left: 0;
+    }
+  }
+}
+
+
+.photo-nav {
+  max-width: 608px;
+  width: 100%;
+  margin-right: 15px;
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__item {
+    max-width: 128px;
+    width: 100%;
+    margin-right: 32px;
+    &:last-of-type {
+      margin-right: 0;
+    }
+  }
+  &__link {
+    width: 100%;
+    transition: box-shadow .3s;
+    &:hover {
+      box-shadow: 0 10px 15px -6px $nav-shadow;
+    }
+  }
+  &__img-wrap {
+    width: 100%;
+    position: relative;
+    top: 4px;
+    padding-bottom: 68.906%;
+  }
+  &__title {
+    margin-bottom: 9px;
+    word-break: break-all;
+  }
+  &__img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  @include md_1190 {
+    &__item {
+      margin: 0 15px 15px 0;
+    }
+  }
+  @include md_960 {
+    max-width: 300px;
+  }
+  @include sm_769 {
+    max-width: 608px;
+    margin: 0 auto;
+    &__item {
+      margin: auto;
+      width: calc((100% - 20px) / 4);
+    }
+  }
+  @include xs_540 {
+    &__item {
+      width: calc((100% - 20px)/ 2);
+      margin: 5px;
+    }
+    &__list {
+      justify-content: center;
+    }
+  }
+}
+
+.dropdown-nav {
+  max-width: 598px;
+  width: 100%;
+  margin-top: 27px;
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -30px;
+  }
+  &__item {
+    width: calc(25% - 60px);
+    margin: 0 30px 6.5px 30px;
+  }
+  &__link {
+    transition: text-shadow .3s;
+    &:hover {
+      color: $color-primary;
+      text-shadow: 0 0 1px $nav-shadow;
+      text-decoration: underline;
+    }
+  }
+  @include md_1190 {
+    &__item {
+      width: calc(33.333% - 60px);
+    }
+  }
+  @include md_960 {
+    &__item {
+      margin: 0 15px 6.5px 15px;
+    }
+  }
+  @include sm_769 {
+    margin: 27px auto 0 auto;
+    &__list {
+      margin: 0;
+    }
+  }
+  @include xs_540 {
+    &__item {
+      width: calc(50% - 20px);
+      margin: 0 10px 6.5px 10px;
+    }
+  }
+}
+
+.dropdown {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  padding: 28px 57px 45px 87px;
+  margin: 0 auto;
+  min-height: 50px;
+  transition: opacity .25s ease-in-out;
+  background-color: $color-secondary;
+  opacity: 0;
+  visibility: hidden;
+  &__wrap{
+    display: flex;
+    justify-content: space-between;
+  }
+  @include md_1190 {
+    padding: 15px 15px 15px 15px;
+  }
+  @include sm_769 {
+    min-height: initial;
+    height: 0;
+    overflow: hidden;
+    visibility: visible;
+    opacity: 1;
+    position: static;
+    max-width: initial;
+    left: 0;
+    padding: 0;
+    transform: none;
+    background-color: transparent;
+    &__wrap {
+      flex-direction: column;
+    }
+  }
+}

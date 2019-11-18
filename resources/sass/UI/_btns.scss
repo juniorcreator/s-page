@@ -1,0 +1,44 @@
+.btn {
+  font-family: 'Open-Sans-Semibold';
+  font-size: 15px;
+  font-weight: 400;
+  color: $color-secondary;
+  display: inline-block;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+  padding: 11px 29px 10px 29px;
+  transition: all .3s;
+  &:hover {
+    box-shadow: 0 0 7px 0 black;
+  }
+  &--primary {
+    padding: 10px 29px 11px 29px;
+    border: 2px solid $color-secondary;
+  }
+  &--secondary {
+    background-color: $color-orange;
+    border-radius: 3px;
+    padding: 15px 24px 14px 24px;
+  }
+  &--get-started {
+    background-color: $color-orange;
+    width: 100%;
+    padding: 19px 29px 18px 29px;
+    &:hover {
+      background-color: $color-orange-hover;
+    }
+  }
+  &--contacts {
+    background-color: $color-orange;
+    padding: 19px 29px 18px 29px;
+    &:hover {
+      background-color: $color-orange-hover;
+    }
+  }
+  @include sm_769 {
+    &--get-started {
+      padding: 15px 29px 14px 29px;
+    }
+  }
+}
