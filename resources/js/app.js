@@ -1,16 +1,14 @@
 
 class Slider {
-  constructor({slider, speed, slidePrev, slideNext, ifSlideNav,
+  constructor({slider, slidePrev, slideNext, ifSlideNav,
                 offset, slideToShow, autoplay, timer, responsive}) {
     this.slider = document.querySelector(slider);
     this.sliderOverflow = this.slider.querySelector('.slider__overflow');
     this.slideItem = this.slider.querySelectorAll('.slider__item');
     this.slideNav = this.slider.querySelector('.slider__nav');
     this.slWrapper = this.slider.querySelector('.slider__wrapper');
-    this.speed = speed || 2000;
     this.navPrev = this.slider.querySelector(slidePrev);
     this.navNext = this.slider.querySelector(slideNext);
-    this.indexes = 0;
     this.offset = offset || 30;
     this.slideToShow = slideToShow || 3;
     this.autoplay = autoplay || false;
@@ -32,6 +30,18 @@ class Slider {
       }
     });
     this.slWrapper.style.marginRight = -this.offset + 'px';
+  }
+  addClass(el, clas) {
+    if( el.length > 1) el.forEach(el => el.classList.add(clas)); else { el.classList.add(clas);}
+  }
+  rmClass(el, clas) {
+    if( el.length > 1) el.forEach(el => el.classList.remove(clas)); else { el.classList.remove(clas);}
+    console.log('rmClass');
+  }
+  toggleNavClass() {
+    !this.count
+        ? this.addClass(this.navPrev, 'not-allowed')
+        : this.rmClass(this.navPrev, 'not-allowed');
   }
   showHideNav() {
     if (this.ifSlideNav) {
@@ -55,6 +65,7 @@ class Slider {
     this.slideItem.forEach(el => el.style.opacity = '1');
     this.count = 0;
     this.totalOffset = 0;
+    this.toggleNavClass();
   }
   getStyle(el, style) {
     let s = window.getComputedStyle(el);
@@ -76,6 +87,7 @@ class Slider {
         this.slideItem[this.count + this.slideToShow].style.opacity = '1';
         this.slWrapper.style.transform = `translate3d(-${this.totalOffset}px, 0px, 0px)`;
         this.count++;
+        this.toggleNavClass();
       } else {
         this.resetToFirst();
         this.totalOffset = 0;
@@ -84,12 +96,15 @@ class Slider {
   }
   setPrev() {
       this.navPrev.addEventListener('click', () => {
+        this.toggleNavClass();
         if (this.count) {
           let px = this.getStyle(this.slideItem[0], 'max-width') + this.offset;
           this.totalOffset = this.totalOffset - px;
           this.slWrapper.style.transform = `translate3d(-${this.totalOffset}px, 0px, 0px)`;
           this.slideItem[this.count -1].style.opacity = '1';
+          this.slideItem[this.count + this.slideToShow -1].style.opacity = '0';
           this.count--;
+          this.toggleNavClass();
         }
       });
   }
@@ -106,6 +121,7 @@ class Slider {
       keys.forEach((el, index) => {
         this[el] = values[index];
       });
+      this.toggleNavClass()
       this.resetToFirst();
       this.baseSetOnInit();
       this.setSlideToShow();
@@ -117,6 +133,7 @@ class Slider {
   init() {
     this.showHideNav();
     this.baseSetOnInit();
+    this.toggleNavClass();
     this.setNext();
     this.setPrev();
     this.setWrapWidth();
@@ -125,43 +142,65 @@ class Slider {
     this.onresize();
   }
 }
-
-class App {
-  constructor() {
-    this.body = document.querySelector('body');
-    this.nav = document.querySelector('.nav');
-    this.navLink = document.querySelectorAll('.js-with-nav ');
-    this.burger = document.querySelector('.nav__burger ');
-    this.tabContents = document.querySelectorAll(".tab-content__item");
-    this.tabBtns = document.querySelectorAll('.tab-btn__item');
-    this.paralaxEl = document.getElementById('paralax')
+class ToggleEl {
+  constructor (toggleEl, screen, prevDef, activeClass) {
+    this.toggleEl =  document.querySelectorAll(toggleEl);
+    this.screen = screen;
+    this.prevDef = prevDef;
+    this.activeClass = activeClass;
+    this.toggle()
   }
-  toggleNav() {
-    this.navLink.forEach(link => {
-      link.addEventListener('click', function (e) {
-        if (window.innerWidth < 768) {
-          e.preventDefault();
-          this.parentElement.classList.toggle('active');
+  toggle() {
+    this.toggleEl.forEach(link => {
+      link.addEventListener('click', (e) => {
+        if (window.innerWidth < this.screen) {
+          if (this.prevDef) {
+            e.preventDefault();
+          }
+          e.target.parentElement.classList.toggle(this.activeClass);
         }
       });
     });
   }
-  showHideMenu() {
-    this.burger.addEventListener('click', () => {
-      this.nav.classList.toggle('show');
-      this.body.classList.toggle('overflow');
-    })
+}
+class Tabs {
+  constructor (tabsBtn, tabContent, activeClass, dataset) {
+    this.tabsBtn = document.querySelectorAll(tabsBtn);
+    this.tabContent = document.querySelectorAll(tabContent);
+    this.activeClass = activeClass;
+    this.dataset = dataset;
+    this.init();
   }
-  tabs() {
-    this.tabBtns.forEach(btn => {
+  init() {
+    this.tabsBtn.forEach(btn => {
       btn.addEventListener('click', (e) => {
-        this.tabContents.forEach((el, i) => {
-          el.classList.remove('active');
-          this.tabBtns[i].classList.remove('active');
+        this.tabContent.forEach((el, i) => {
+          el.classList.remove(this.activeClass);
+          this.tabsBtn[i].classList.remove(this.activeClass);
         });
-        this.tabBtns[+e.target.dataset.tab].classList.add('active');
-        this.tabContents[+e.target.dataset.tab].classList.add('active');
+        this.tabsBtn[+e.target.dataset[this.dataset]].classList.add(this.activeClass);
+        this.tabContent[+e.target.dataset[this.dataset]].classList.add(this.activeClass);
       });
+    });
+  }
+}
+
+class App {
+  constructor() {
+    this.body = document.querySelector('body');
+    this.paralaxEl = document.getElementById('paralax')
+  }
+  showHideEl(elToClick, fClass, sClass, elToToggle, toggleClass, ifSmthOverflow, elToOverflow, clToOverflow) {
+    let b = false;
+    let elClick = document.querySelector(elToClick);
+    elClick.addEventListener('click', () => {
+      b = !b;
+      b ? elClick.classList.replace(fClass, sClass)
+          :  elClick.classList.replace(sClass, fClass);
+      document.querySelector(elToToggle).classList.toggle(toggleClass);
+      if (ifSmthOverflow) {
+        document.querySelector(elToOverflow).classList.toggle(clToOverflow);
+      }
     });
   }
   paralax(el) {
@@ -173,18 +212,23 @@ class App {
     });
   }
   init() {
-    this.showHideMenu();
-    this.toggleNav();
-    this.tabs();
+    this.showHideEl('.nav__burger',
+        'fa-bars',
+        'fa-times',
+        '.nav',
+        'show', true,
+        'body',
+        'overflow'
+        );
     this.paralax(this.paralaxEl);
   }
 }
 
 let app = new App().init();
-
+let toggleEl = new ToggleEl('.js-with-nav', 768, true, 'active');
+let tabs = new Tabs('.tab-btn__item', '.tab-content__item', 'active', 'tab');
 let slide = new Slider({
   slider: '#slider',
-  speed: 300,
   slidePrev: '.slider__prev',
   slideNext: '.slider__next',
   ifSlideNav: true,

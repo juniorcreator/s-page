@@ -12,6 +12,9 @@
     display: inline-block;
     padding: 10px;
     position: absolute;
+    &.not-allowed {
+      cursor: not-allowed;
+    }
   }
   &__next {
     right: 0;
@@ -38,9 +41,6 @@
     }
   }
 }
-
-
-
 
 .comment {
   max-width: 1060px;
@@ -86,7 +86,7 @@
     width: 72px;
     height: 72px;
     border-radius: 50%;
-    object-fit: contain;
+    overflow: hidden;
     margin-right: 15px;
   }
   &__describe {
@@ -94,7 +94,6 @@
   }
   &__name {
     color: $color-primary-lighter;
-    font-family: 'Open Sans';
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 8px;

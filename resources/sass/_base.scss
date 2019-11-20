@@ -5,6 +5,8 @@
   box-sizing: border-box;
   outline: 0;
   list-style: none;
+  font-family: 'Open Sans';
+  font-style: normal;
 }
 html, body {
   height: 100%;
@@ -23,14 +25,6 @@ a {
   display: inline-block;
   text-decoration: none;
 }
-.main-wrapper {
-  max-width: 1400px;
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  position: relative;
-  background-color: #fff;
-}
 .content {
   max-width: 1138px;
   width: 100%;
@@ -38,7 +32,6 @@ a {
   height: 100%;
   margin: 0 auto;
 }
-
 .s-title {
   font-family: 'Raleway';
   font-size: 36px;
@@ -101,7 +94,6 @@ a {
 }
 .block-title {
   color: $color-primary;
-  font-family: "Open Sans";
   font-size: 20px;
   font-weight: 700;
   line-height: 43px;
@@ -123,17 +115,20 @@ a {
     }
   }
 }
+.c-orange {
+  color: $color-orange;
+  text-transform: uppercase;
+}
 input, textarea {
-  font-family: 'Open Sans';
   font-size: 14px;
   font-weight: 400;
   color: $input-color;
 }
-::-webkit-input-placeholder { /* Edge */
+::-webkit-input-placeholder {
   color: $input-color;
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
+:-ms-input-placeholder {
   color: $input-color;
 }
 
@@ -141,7 +136,6 @@ input, textarea {
   color: $input-color;
 }
 p.text {
-  font-family: 'Open Sans';
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
@@ -163,7 +157,6 @@ p.text-secondary {
   font-size: 14px;
   font-weight: 400;
 }
-
 @include sm_769 {
   .photo-nav__title, .dropdown-nav__link {
     color: $color-secondary;

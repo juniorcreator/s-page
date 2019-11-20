@@ -7,7 +7,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Slider = function () {
   function Slider(_ref) {
     var slider = _ref.slider,
-        speed = _ref.speed,
         slidePrev = _ref.slidePrev,
         slideNext = _ref.slideNext,
         ifSlideNav = _ref.ifSlideNav,
@@ -24,10 +23,8 @@ var Slider = function () {
     this.slideItem = this.slider.querySelectorAll('.slider__item');
     this.slideNav = this.slider.querySelector('.slider__nav');
     this.slWrapper = this.slider.querySelector('.slider__wrapper');
-    this.speed = speed || 2000;
     this.navPrev = this.slider.querySelector(slidePrev);
     this.navNext = this.slider.querySelector(slideNext);
-    this.indexes = 0;
     this.offset = offset || 30;
     this.slideToShow = slideToShow || 3;
     this.autoplay = autoplay || false;
@@ -54,6 +51,30 @@ var Slider = function () {
         }
       });
       this.slWrapper.style.marginRight = -this.offset + 'px';
+    }
+  }, {
+    key: 'addClass',
+    value: function addClass(el, clas) {
+      if (el.length > 1) el.forEach(function (el) {
+        return el.classList.add(clas);
+      });else {
+        el.classList.add(clas);
+      }
+    }
+  }, {
+    key: 'rmClass',
+    value: function rmClass(el, clas) {
+      if (el.length > 1) el.forEach(function (el) {
+        return el.classList.remove(clas);
+      });else {
+        el.classList.remove(clas);
+      }
+      console.log('rmClass');
+    }
+  }, {
+    key: 'toggleNavClass',
+    value: function toggleNavClass() {
+      !this.count ? this.addClass(this.navPrev, 'not-allowed') : this.rmClass(this.navPrev, 'not-allowed');
     }
   }, {
     key: 'showHideNav',
@@ -91,6 +112,7 @@ var Slider = function () {
       });
       this.count = 0;
       this.totalOffset = 0;
+      this.toggleNavClass();
     }
   }, {
     key: 'getStyle',
@@ -124,6 +146,7 @@ var Slider = function () {
           _this4.slideItem[_this4.count + _this4.slideToShow].style.opacity = '1';
           _this4.slWrapper.style.transform = 'translate3d(-' + _this4.totalOffset + 'px, 0px, 0px)';
           _this4.count++;
+          _this4.toggleNavClass();
         } else {
           _this4.resetToFirst();
           _this4.totalOffset = 0;
@@ -136,12 +159,15 @@ var Slider = function () {
       var _this5 = this;
 
       this.navPrev.addEventListener('click', function () {
+        _this5.toggleNavClass();
         if (_this5.count) {
           var px = _this5.getStyle(_this5.slideItem[0], 'max-width') + _this5.offset;
           _this5.totalOffset = _this5.totalOffset - px;
           _this5.slWrapper.style.transform = 'translate3d(-' + _this5.totalOffset + 'px, 0px, 0px)';
           _this5.slideItem[_this5.count - 1].style.opacity = '1';
+          _this5.slideItem[_this5.count + _this5.slideToShow - 1].style.opacity = '0';
           _this5.count--;
+          _this5.toggleNavClass();
         }
       });
     }
@@ -167,6 +193,7 @@ var Slider = function () {
           keys.forEach(function (el, index) {
             _this6[el] = values[index];
           });
+          _this6.toggleNavClass();
           _this6.resetToFirst();
           _this6.baseSetOnInit();
           _this6.setSlideToShow();
@@ -183,6 +210,7 @@ var Slider = function () {
     value: function init() {
       this.showHideNav();
       this.baseSetOnInit();
+      this.toggleNavClass();
       this.setNext();
       this.setPrev();
       this.setWrapWidth();
@@ -195,55 +223,90 @@ var Slider = function () {
   return Slider;
 }();
 
+var ToggleEl = function () {
+  function ToggleEl(toggleEl, screen, prevDef, activeClass) {
+    _classCallCheck(this, ToggleEl);
+
+    this.toggleEl = document.querySelectorAll(toggleEl);
+    this.screen = screen;
+    this.prevDef = prevDef;
+    this.activeClass = activeClass;
+    this.toggle();
+  }
+
+  _createClass(ToggleEl, [{
+    key: 'toggle',
+    value: function toggle() {
+      var _this7 = this;
+
+      this.toggleEl.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          if (window.innerWidth < _this7.screen) {
+            if (_this7.prevDef) {
+              e.preventDefault();
+            }
+            e.target.parentElement.classList.toggle(_this7.activeClass);
+          }
+        });
+      });
+    }
+  }]);
+
+  return ToggleEl;
+}();
+
+var Tabs = function () {
+  function Tabs(tabsBtn, tabContent, activeClass, dataset) {
+    _classCallCheck(this, Tabs);
+
+    this.tabsBtn = document.querySelectorAll(tabsBtn);
+    this.tabContent = document.querySelectorAll(tabContent);
+    this.activeClass = activeClass;
+    this.dataset = dataset;
+    this.init();
+  }
+
+  _createClass(Tabs, [{
+    key: 'init',
+    value: function init() {
+      var _this8 = this;
+
+      this.tabsBtn.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          _this8.tabContent.forEach(function (el, i) {
+            el.classList.remove(_this8.activeClass);
+            _this8.tabsBtn[i].classList.remove(_this8.activeClass);
+          });
+          _this8.tabsBtn[+e.target.dataset[_this8.dataset]].classList.add(_this8.activeClass);
+          _this8.tabContent[+e.target.dataset[_this8.dataset]].classList.add(_this8.activeClass);
+        });
+      });
+    }
+  }]);
+
+  return Tabs;
+}();
+
 var App = function () {
   function App() {
     _classCallCheck(this, App);
 
     this.body = document.querySelector('body');
-    this.nav = document.querySelector('.nav');
-    this.navLink = document.querySelectorAll('.js-with-nav ');
-    this.burger = document.querySelector('.nav__burger ');
-    this.tabContents = document.querySelectorAll(".tab-content__item");
-    this.tabBtns = document.querySelectorAll('.tab-btn__item');
     this.paralaxEl = document.getElementById('paralax');
   }
 
   _createClass(App, [{
-    key: 'toggleNav',
-    value: function toggleNav() {
-      this.navLink.forEach(function (link) {
-        link.addEventListener('click', function (e) {
-          if (window.innerWidth < 768) {
-            e.preventDefault();
-            this.parentElement.classList.toggle('active');
-          }
-        });
-      });
-    }
-  }, {
-    key: 'showHideMenu',
-    value: function showHideMenu() {
-      var _this7 = this;
-
-      this.burger.addEventListener('click', function () {
-        _this7.nav.classList.toggle('show');
-        _this7.body.classList.toggle('overflow');
-      });
-    }
-  }, {
-    key: 'tabs',
-    value: function tabs() {
-      var _this8 = this;
-
-      this.tabBtns.forEach(function (btn) {
-        btn.addEventListener('click', function (e) {
-          _this8.tabContents.forEach(function (el, i) {
-            el.classList.remove('active');
-            _this8.tabBtns[i].classList.remove('active');
-          });
-          _this8.tabBtns[+e.target.dataset.tab].classList.add('active');
-          _this8.tabContents[+e.target.dataset.tab].classList.add('active');
-        });
+    key: 'showHideEl',
+    value: function showHideEl(elToClick, fClass, sClass, elToToggle, toggleClass, ifSmthOverflow, elToOverflow, clToOverflow) {
+      var b = false;
+      var elClick = document.querySelector(elToClick);
+      elClick.addEventListener('click', function () {
+        b = !b;
+        b ? elClick.classList.replace(fClass, sClass) : elClick.classList.replace(sClass, fClass);
+        document.querySelector(elToToggle).classList.toggle(toggleClass);
+        if (ifSmthOverflow) {
+          document.querySelector(elToOverflow).classList.toggle(clToOverflow);
+        }
       });
     }
   }, {
@@ -259,9 +322,7 @@ var App = function () {
   }, {
     key: 'init',
     value: function init() {
-      this.showHideMenu();
-      this.toggleNav();
-      this.tabs();
+      this.showHideEl('.nav__burger', 'fa-bars', 'fa-times', '.nav', 'show', true, 'body', 'overflow');
       this.paralax(this.paralaxEl);
     }
   }]);
@@ -270,10 +331,10 @@ var App = function () {
 }();
 
 var app = new App().init();
-
+var toggleEl = new ToggleEl('.js-with-nav', 768, true, 'active');
+var tabs = new Tabs('.tab-btn__item', '.tab-content__item', 'active', 'tab');
 var slide = new Slider({
   slider: '#slider',
-  speed: 300,
   slidePrev: '.slider__prev',
   slideNext: '.slider__next',
   ifSlideNav: true,
