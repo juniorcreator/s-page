@@ -36,7 +36,6 @@ class Slider {
   }
   rmClass(el, clas) {
     if( el.length > 1) el.forEach(el => el.classList.remove(clas)); else { el.classList.remove(clas);}
-    console.log('rmClass');
   }
   toggleNavClass() {
     !this.count
@@ -184,84 +183,90 @@ class Tabs {
     });
   }
 }
-
-class App {
-  constructor() {
-    this.body = document.querySelector('body');
-    this.paralaxEl = document.getElementById('paralax')
+class ShowHide {
+  constructor(elToClick, fClass, sClass, elToToggle, toggleClass, ifSmthOverflow, elToOverflow, clToOverflow) {
+    this.elToClick = document.querySelector(elToClick);
+    this.fClass = fClass;
+    this.sClass = sClass;
+    this.elToToggle = document.querySelector(elToToggle);
+    this.toggleClass = toggleClass;
+    this.ifSmthOverflow = ifSmthOverflow;
+    this.elToOverflow = document.querySelector(elToOverflow);
+    this.clToOverflow = clToOverflow;
+    this.bool = false;
+    this.init();
   }
-  showHideEl(elToClick, fClass, sClass, elToToggle, toggleClass, ifSmthOverflow, elToOverflow, clToOverflow) {
-    let b = false;
-    let elClick = document.querySelector(elToClick);
-    elClick.addEventListener('click', () => {
-      b = !b;
-      b ? elClick.classList.replace(fClass, sClass)
-          :  elClick.classList.replace(sClass, fClass);
-      document.querySelector(elToToggle).classList.toggle(toggleClass);
-      if (ifSmthOverflow) {
-        document.querySelector(elToOverflow).classList.toggle(clToOverflow);
+  init() {
+    this.elToClick.addEventListener('click', () => {
+      this.bool = !this.bool;
+      this.bool
+          ? this.elToClick.classList.replace(this.fClass, this.sClass)
+          :  this.elToClick.classList.replace(this.sClass, this.fClass);
+      this.elToToggle.classList.toggle(this.toggleClass);
+      if (this.ifSmthOverflow) {
+        this.elToOverflow.classList.toggle(this.clToOverflow);
       }
     });
   }
-  paralax(el) {
-    window.addEventListener("scroll", () => {
-      let val = scrollY;
-      let ofT = el.offsetTop;
-      let res = val - ofT;
-      el.style.backgroundPosition = '0% ' + (res / +el.dataset.speed) + 'px';
-    });
+}
+class Pralax {
+  constructor(element, speed) {
+    this.element = document.querySelector(element);
+    this.speed = speed;
+    this.init();
   }
   init() {
-    this.showHideEl('.nav__burger',
-        'fa-bars',
-        'fa-times',
-        '.nav',
-        'show', true,
-        'body',
-        'overflow'
-        );
-    this.paralax(this.paralaxEl);
+    window.addEventListener("scroll", () => {
+      let val = scrollY;
+      let ofT = this.element.offsetTop;
+      let res = val - ofT;
+      this.element.style.backgroundPosition = '0% ' + (res / +this.element.dataset[this.speed]) + 'px';
+    });
   }
 }
 
-let app = new App().init();
-let toggleEl = new ToggleEl('.js-with-nav', 768, true, 'active');
-let tabs = new Tabs('.tab-btn__item', '.tab-content__item', 'active', 'tab');
-let slide = new Slider({
-  slider: '#slider',
-  slidePrev: '.slider__prev',
-  slideNext: '.slider__next',
-  ifSlideNav: true,
-  offset: 120,
-  slideToShow: 3,
-  autoplay: false,
-  timer: 2000,
-  responsive: {
-    '1590w': {
+class App {
+  appInit() {
+    let paralax = new Pralax('#paralax', 'speed');
+    let showHide = new ShowHide('.nav__burger', 'fa-bars', 'fa-times', '.nav', 'show', true,  'body', 'overflow');
+    let toggleEl = new ToggleEl('.js-with-nav', 768, true, 'active');
+    let tabs = new Tabs('.tab-btn__item', '.tab-content__item', 'active', 'tab');
+    let slide = new Slider({
+      slider: '#slider',
+      slidePrev: '.slider__prev',
+      slideNext: '.slider__next',
+      ifSlideNav: true,
       offset: 120,
-      slideToShow: 3
-    },
-    '1200w': {
-      offset: 30,
-      slideToShow: 3
-    },
-      '960w': {
-        offset: 40,
-        slideToShow: 3
-      },
-      '769w': {
-        offset: 15,
-        slideToShow: 3
-      },
-    '690w': {
-      offset: 20,
-      slideToShow: 2
-    },
-      '540w': {
-        offset: 0,
-        slideToShow: 1
+      slideToShow: 3,
+      autoplay: false,
+      timer: 2000,
+      responsive: {
+        '1590w': {
+          offset: 120,
+          slideToShow: 3
+        },
+        '1200w': {
+          offset: 30,
+          slideToShow: 3
+        },
+        '960w': {
+          offset: 40,
+          slideToShow: 3
+        },
+        '769w': {
+          offset: 15,
+          slideToShow: 3
+        },
+        '690w': {
+          offset: 20,
+          slideToShow: 2
+        },
+        '540w': {
+          offset: 0,
+          slideToShow: 1
+        }
       }
-    }
-});
-
-
+    });
+  }
+}
+let app = new App().appInit();
