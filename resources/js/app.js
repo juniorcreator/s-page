@@ -1,4 +1,3 @@
-
 class Slider {
   constructor({slider, slidePrev, slideNext, ifSlideNav,
                 offset, slideToShow, autoplay, timer, responsive}) {
@@ -225,48 +224,43 @@ class Pralax {
   }
 }
 
-class App {
-  appInit() {
-    let paralax = new Pralax('#paralax', 'speed');
-    let showHide = new ShowHide('.nav__burger', 'fa-bars', 'fa-times', '.nav', 'show', true,  'body', 'overflow');
-    let toggleEl = new ToggleEl('.js-with-nav', 768, true, 'active');
-    let tabs = new Tabs('.tab-btn__item', '.tab-content__item', 'active', 'tab');
-    let slide = new Slider({
-      slider: '#slider',
-      slidePrev: '.slider__prev',
-      slideNext: '.slider__next',
-      ifSlideNav: true,
+let paralax = new Pralax('#paralax', 'speed');
+let showHide = new ShowHide('.nav__burger', 'fa-bars', 'fa-times', '.nav', 'show', true,  'body', 'overflow');
+let toggleEl = new ToggleEl('.js-with-nav', 768, true, 'active');
+let tabs = new Tabs('.tab-btn__item', '.tab-content__item', 'active', 'tab');
+let slide = new Slider({
+  slider: '#slider',
+  slidePrev: '.slider__prev',
+  slideNext: '.slider__next',
+  ifSlideNav: true,
+  offset: 120,
+  slideToShow: 3,
+  autoplay: false,
+  timer: 2000,
+  responsive: {
+    '1590w': {
       offset: 120,
-      slideToShow: 3,
-      autoplay: false,
-      timer: 2000,
-      responsive: {
-        '1590w': {
-          offset: 120,
-          slideToShow: 3
-        },
-        '1200w': {
-          offset: 30,
-          slideToShow: 3
-        },
-        '960w': {
-          offset: 40,
-          slideToShow: 3
-        },
-        '769w': {
-          offset: 15,
-          slideToShow: 3
-        },
-        '690w': {
-          offset: 20,
-          slideToShow: 2
-        },
-        '540w': {
-          offset: 0,
-          slideToShow: 1
-        }
-      }
-    });
+      slideToShow: 3
+    },
+    '1200w': {
+      offset: 30,
+      slideToShow: 3
+    },
+    '960w': {
+      offset: 40,
+      slideToShow: 3
+    },
+    '769w': {
+      offset: 15,
+      slideToShow: 3
+    },
+    '690w': {
+      offset: 20,
+      slideToShow: 2
+    },
+    '540w': {
+      offset: 0,
+      slideToShow: 1
+    }
   }
-}
-let app = new App().appInit();
+});
