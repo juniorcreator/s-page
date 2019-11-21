@@ -69,7 +69,6 @@ var Slider = function () {
       });else {
         el.classList.remove(clas);
       }
-      console.log('rmClass');
     }
   }, {
     key: 'toggleNavClass',
@@ -287,50 +286,69 @@ var Tabs = function () {
   return Tabs;
 }();
 
-var App = function () {
-  function App() {
-    _classCallCheck(this, App);
+var ShowHide = function () {
+  function ShowHide(elToClick, fClass, sClass, elToToggle, toggleClass, ifSmthOverflow, elToOverflow, clToOverflow) {
+    _classCallCheck(this, ShowHide);
 
-    this.body = document.querySelector('body');
-    this.paralaxEl = document.getElementById('paralax');
+    this.elToClick = document.querySelector(elToClick);
+    this.fClass = fClass;
+    this.sClass = sClass;
+    this.elToToggle = document.querySelector(elToToggle);
+    this.toggleClass = toggleClass;
+    this.ifSmthOverflow = ifSmthOverflow;
+    this.elToOverflow = document.querySelector(elToOverflow);
+    this.clToOverflow = clToOverflow;
+    this.bool = false;
+    this.init();
   }
 
-  _createClass(App, [{
-    key: 'showHideEl',
-    value: function showHideEl(elToClick, fClass, sClass, elToToggle, toggleClass, ifSmthOverflow, elToOverflow, clToOverflow) {
-      var b = false;
-      var elClick = document.querySelector(elToClick);
-      elClick.addEventListener('click', function () {
-        b = !b;
-        b ? elClick.classList.replace(fClass, sClass) : elClick.classList.replace(sClass, fClass);
-        document.querySelector(elToToggle).classList.toggle(toggleClass);
-        if (ifSmthOverflow) {
-          document.querySelector(elToOverflow).classList.toggle(clToOverflow);
+  _createClass(ShowHide, [{
+    key: 'init',
+    value: function init() {
+      var _this9 = this;
+
+      this.elToClick.addEventListener('click', function () {
+        _this9.bool = !_this9.bool;
+        _this9.bool ? _this9.elToClick.classList.replace(_this9.fClass, _this9.sClass) : _this9.elToClick.classList.replace(_this9.sClass, _this9.fClass);
+        _this9.elToToggle.classList.toggle(_this9.toggleClass);
+        if (_this9.ifSmthOverflow) {
+          _this9.elToOverflow.classList.toggle(_this9.clToOverflow);
         }
       });
     }
-  }, {
-    key: 'paralax',
-    value: function paralax(el) {
-      window.addEventListener("scroll", function () {
-        var val = scrollY;
-        var ofT = el.offsetTop;
-        var res = val - ofT;
-        el.style.backgroundPosition = '0% ' + res / +el.dataset.speed + 'px';
-      });
-    }
-  }, {
+  }]);
+
+  return ShowHide;
+}();
+
+var Pralax = function () {
+  function Pralax(element, speed) {
+    _classCallCheck(this, Pralax);
+
+    this.element = document.querySelector(element);
+    this.speed = speed;
+    this.init();
+  }
+
+  _createClass(Pralax, [{
     key: 'init',
     value: function init() {
-      this.showHideEl('.nav__burger', 'fa-bars', 'fa-times', '.nav', 'show', true, 'body', 'overflow');
-      this.paralax(this.paralaxEl);
+      var _this10 = this;
+
+      window.addEventListener("scroll", function () {
+        var val = scrollY;
+        var ofT = _this10.element.offsetTop;
+        var res = val - ofT;
+        _this10.element.style.backgroundPosition = '0% ' + res / +_this10.element.dataset[_this10.speed] + 'px';
+      });
     }
   }]);
 
-  return App;
+  return Pralax;
 }();
 
-var app = new App().init();
+var paralax = new Pralax('#paralax', 'speed');
+var showHide = new ShowHide('.nav__burger', 'fa-bars', 'fa-times', '.nav', 'show', true, 'body', 'overflow');
 var toggleEl = new ToggleEl('.js-with-nav', 768, true, 'active');
 var tabs = new Tabs('.tab-btn__item', '.tab-content__item', 'active', 'tab');
 var slide = new Slider({
